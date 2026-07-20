@@ -5,10 +5,6 @@
 
 Welcome to the official repo of the TransTTE model -- transformer-based travel time estimation algorithm. Here we present the source code for accepted PKDD'22 paper "Logistics, Graphs, and Transformers: Towards improving Travel Time Estimation".
 
-Natalia Semenova, Artyom Sosedka, Vladislav Tishin, Vladislav Zamkovoy, [Vadim Porvatov](https://www.researchgate.net/profile/Vadim-Porvatov)
-
-You can access inference of our model at [transtte.online](http://transtte.online)
-
 arXiv PDF: https://arxiv.org/abs/2207.05835
 
 # Prerequisites
@@ -101,28 +97,3 @@ We provide two datasets corresponding to the cities of Abakan and Omsk. For each
 </td></tr> </table>
 
 Provided data could be used for research purposes only. If you want to incorporate it in your study, please send request to semenova.bnl@gmail.com.
-
-# License
-
-Established code released as open-source software under the MIT license.
-
-# Contact us
-
-If you have some questions about the code, you are welcome to open an issue, I will respond to that as soon as possible.
-
-# Citation
-
-```
-@InProceedings{10.1007/978-3-031-26422-1_36,
-author="Semenova, Natalia
-and Porvatov, Vadim
-and Tishin, Vladislav
-and Sosedka, Artyom
-and Zamkovoy, Vladislav",
-title="Logistics, Graphs, and Transformers: Towards Improving Travel Time Estimation",
-booktitle="Machine Learning and Knowledge Discovery in Databases",
-year="2023",
-publisher="Springer Nature Switzerland",
-pages="589--593"
-}
-```

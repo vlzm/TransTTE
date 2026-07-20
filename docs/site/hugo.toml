@@ -1,7 +1,7 @@
 baseURL = 'https://vloods.github.io/TransTTE_demo/'   # adjust to the real Pages URL/domain
 title = 'TransTTE'
 theme = 'hugo-book'
-languageCode = 'en-us'
+locale = 'en-us'
 
 # hugo-book builds the left-hand menu from the content/docs tree
 [params]

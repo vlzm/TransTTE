@@ -1,4 +1,23 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
+baseURL = 'https://vloods.github.io/TransTTE_demo/'   # adjust to the real Pages URL/domain
 title = 'TransTTE'
 theme = 'hugo-book'
+languageCode = 'en-us'
+
+# hugo-book builds the left-hand menu from the content/docs tree
+[params]
+  BookTheme = 'auto'          # light/dark/auto
+  BookToC = true              # right-hand table of contents
+  BookRepo = 'https://github.com/Vloods/TransTTE_demo'   # "Edit this page" link
+  BookEditPath = 'edit/main/docs/site/content'
+  BookSearch = true
+  BookComments = false
+
+# KaTeX + Mermaid are enabled per-page via front matter (math / mermaid),
+# or globally — see section 7 of the docs plan.
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true             # needed for inline HTML (README tables, images)
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 3

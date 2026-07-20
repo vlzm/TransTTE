@@ -6,4 +6,9 @@ bookCollapseSection: true
 
 # Reference
 
-_Placeholder — section overview. See the API and glossary pages below._
+Quick-lookup material rather than prose. Two pages:
+
+- [**API**]({{< relref "/docs/reference/api" >}}) — the HTTP endpoints of both
+  services, with exact request and response bodies.
+- [**Glossary**]({{< relref "/docs/reference/glossary" >}}) — the terms used across the
+  rest of the docs, defined in one place.

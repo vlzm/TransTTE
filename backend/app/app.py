@@ -46,24 +46,23 @@ app.add_middleware(
 app.mount('/js', StaticFiles(directory=BASE / 'js'))
 app.mount('/css', StaticFiles(directory=BASE / 'css'))
 
-print('1')
+logger.debug('loading abakan dijkstra graph and ETA model')
 dijkstra_abakan = DijkstraPath(BASE / 'data/dijkstra.pickle', BASE / 'data/clear_nodes.pkl')
 etainf_abakan = ETAInf(BASE / 'data/SimpleTTE.pth', BASE / 'data/meteoData.csv', BASE / 'data/dgi_sage_abakan_5_5_5_relu_relu_relu_200e_mean_pool_0.0114.csv')
 weights_dict_abakan = {}
 
-print('2')
+logger.debug('loading omsk dijkstra graph and ETA model')
 dijkstra_omsk = DijkstraPath(BASE / 'data/graph_omsk.pkl', BASE / 'data/clear_nodes_omsk.pkl')
 etainf_omsk = ETAInf(BASE / 'data/SimpleTTE.pth', BASE / 'data/meteoData.csv', BASE / 'data/dgi_sage_abakan_5_5_5_relu_relu_relu_200e_mean_pool_0.0114.csv')
 weights_dict_omsk = {}
 
-print('3')
-
+logger.debug('loading abakan weight variants')
 for weight in sorted((BASE / 'data/weights_abakan').iterdir()):
     if '.pkl' in weight.name:
         with open(weight, 'rb') as fd:
             weights_dict_abakan[weight.name.split('.')[0]] = pickle.load(fd)
 
-print('4')
+logger.debug('loading omsk weight variants')
 for weight in sorted((BASE / 'data/weights_omsk').iterdir()):
     if '.pkl' in weight.name:
         with open(weight, 'rb') as fd:
@@ -88,7 +87,7 @@ def check_town(points):
     return _check_town(points.start_lat, points.start_lon, points.end_lat, points.end_lon)
     
 preloaded_weights = True
-print('start weight load')
+logger.debug('loading graphormer weights')
 if preloaded_weights:
     weights_abakan_link = str(BASE) + '/data/graphormer_weights/' + 'weights_abakan.pickle'
     weights_omsk_link = str(BASE) + '/data/graphormer_weights/' + 'weights_omsk.pickle'
@@ -109,13 +108,12 @@ else:
     r = requests.post('http://127.0.0.1:3006/get_path', headers = {'Content-Type': 'application/json'}, json = body)
     weights_abakan = r.json()['abakan']
     weights_omsk = r.json()['omsk']
-print('end weight load')
+logger.debug('graphormer weights loaded')
 
     
 
 @app.get('/')
 def ping():
-    print('1')
     html_file = BASE / 'index.html'
     return HTMLResponse(html_file.open().read())
 
@@ -123,7 +121,7 @@ def ping():
 @app.post('/get_path')
 def return_path(points: Points):
     
-    print('start get_path')
+    logger.debug('start get_path')
     logger.info(points)
     if not all(map(lambda x: 0 <= x[1] <= 180, points)):
         raise HTTPException(status_code=400, detail="Every coordinate should be in 0..180")
@@ -131,7 +129,7 @@ def return_path(points: Points):
     response = []
     paths = []
     if cur_data_name == 'abakan':
-        print('abakan')
+        logger.debug('routing in abakan')
         for name, weights in weights_dict_abakan.items():
             p, path = dijkstra_abakan.get_shortest_path((points.start_lat, points.start_lon), (points.end_lat, points.end_lon), weights)
             etapred = etainf_abakan.forward(p, points, path[1][:2], path[1][-2:])
@@ -143,9 +141,9 @@ def return_path(points: Points):
         p, path, time = dijkstra_abakan.get_shortest_path_grph((points.start_lat, points.start_lon), (points.end_lat, points.end_lon), weights)
         dict_ = {'path': path[1][:-1], 'eta': int(time), 'type': name}
         response.append(dict_)
-        print('len response', len(response))
+        logger.debug('len response {}', len(response))
     elif cur_data_name == 'omsk':
-        print('omsk')
+        logger.debug('routing in omsk')
         for name, weights in weights_dict_omsk.items():
             p, path, time = dijkstra_omsk.get_shortest_path_grph((points.start_lat, points.start_lon), (points.end_lat, points.end_lon), weights)
             time = time / 10
@@ -158,9 +156,9 @@ def return_path(points: Points):
         p, path, time = dijkstra_omsk.get_shortest_path_grph((points.start_lat, points.start_lon), (points.end_lat, points.end_lon), weights)
         dict_ = {'path': path[1][:-1], 'eta': int(time), 'type': name}
         response.append(dict_)
-        print('len response', len(response))
+        logger.debug('len response {}', len(response))
     else:
-        print('error!')
+        logger.debug('coordinates outside supported cities')
         raise HTTPException(status_code=400, detail="Coordinates should be in Omsk or Abakan")
     
             

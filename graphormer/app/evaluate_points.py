@@ -11,7 +11,7 @@ from sklearn.metrics import roc_auc_score, mean_squared_error, mean_absolute_per
 
 from os import path
 import logging
-from data_class import single_geo_Omsk, GraphormerPYGDataset_predict, single_geo_Abakan, single_geo_Abakan_raw
+from data_class import single_geo_Omsk, GraphormerPYGDataset_predict, single_geo_Abakan_raw
 import os.path as osp
 from torch_geometric.data import Dataset
 from functools import lru_cache
@@ -34,9 +34,8 @@ from fairseq.data import (
 import json
 import pathlib
 from pathlib import Path
-BASE = Path(os.path.realpath(__file__)).parent
-GLOBAL_ROOT = str(BASE / 'graphormer_repo' / 'graphormer')
-BASE = str(Path(os.path.realpath('')).parent) + '/app'
+BASE = str(Path(os.path.realpath(__file__)).parent)
+GLOBAL_ROOT = str(Path(BASE) / 'graphormer_repo' / 'graphormer')
 sys.path.insert(2, (GLOBAL_ROOT))
 from data.wrapper import preprocess_item
 
@@ -49,7 +48,6 @@ from data.dataset import (
 
 
 def prepare_eval_iterator(cfg, predict_dataset, data_name, task):
-    # print('prepare_eval_iterator start')
     np.random.seed(cfg.common.seed)
     utils.set_torch_seed(cfg.common.seed)
     seed = 71
@@ -70,11 +68,9 @@ def prepare_eval_iterator(cfg, predict_dataset, data_name, task):
     )
     itr = batch_iterator.next_epoch_itr(shuffle=False, set_dataset_epoch=False)
     progress = progress_bar.progress_bar(itr)
-    # print('prepare_eval_iterator end')
     return progress
 
 def prepare_task(args):
-    # print('prep task')
     cfg = convert_namespace_to_omegaconf(args)
     task = tasks.setup_task(cfg.task)
     return task
@@ -92,7 +88,6 @@ def prepare_eval_model(args, model_state_link):
     return model
 
 def prepare_args(dataset_name):
-    # print('prep argsss')
     parser_dict = dict()
     parser_dict['num-atoms'] = str(6656)
     parser_dict['dataset_name'] = dataset_name
@@ -134,23 +129,18 @@ def prepare_args(dataset_name):
     return args
 
 def predict_time(model, progress):
-    # print('predict_time start')
     y_pred = []
     with torch.no_grad():
         model.eval()
         for i, sample in enumerate(progress):
-            # print('sample')
             sample = utils.move_to_cuda(sample)
-            # print('sample')
             y = model(**sample["net_input"])[:, 0, :].reshape(-1)
             y_pred.extend(y.detach().cpu())
             torch.cuda.empty_cache()
-            
+
     # save predictions
-    y_pred = torch.Tensor(y_pred) 
-    # print('y_pred:', y_pred)
-    # print('predict_time end')
-    return y_pred   
+    y_pred = torch.Tensor(y_pred)
+    return y_pred
 
 def prepare_dataset(dataset_link):
     data = pd.read_pickle(dataset_link).dropna()
@@ -163,55 +153,22 @@ def prepare_dataset(dataset_link):
     return data
 
 def prepare_points(data, pt_start_N, pt_start_E, pt_end_N, pt_end_E, data_name = ''):
-    # print('prepare_points start')
-    # point_start = pt_start
-    # point_end = pt_end
-
     data['point_start_N'] = pt_start_N
     data['point_start_E'] = pt_start_E
     data['point_end_N'] = pt_end_N
     data['point_end_E'] = pt_end_E
-    
-    print('apply start')
-    # data['dist_start'] = data.apply(lambda x: (x['edge_coord_start'][0][0] - x['point_start_N'])**2 + (x['edge_coord_start'][0][1] - x['point_start_E'])**2, axis = 1)
-    # data['dist_end'] = data.apply(lambda x: (x['edge_coord_end'][0][0] - x['point_end_N'])**2 + (x['edge_coord_end'][0][1] - x['point_end_E'])**2, axis = 1)
-    # data['dist_mean'] = (data['dist_start'] + data['dist_end'])/2
-    
-    
+
     data['dist_start'] = (data['edge_coord_start_N'] - data['point_start_N'])**2 + (data['edge_coord_start_E'] - data['point_start_E'])**2
     data['dist_end'] = (data['edge_coord_end_N'] - data['point_end_N'])**2 + (data['edge_coord_end_E'] - data['point_end_E'])**2
     data['dist_mean'] = (data['dist_start'] + data['dist_end'])/2
-    # print('apply start')
-    
+
     predict_table = data.sort_values(by = ['dist_mean']).reset_index(drop = True)[:1]
-    # print('prepare_points end')
     return predict_table
 
 def convert_to_torch(predict_table, data_name):
-    # print('geo start')
     if data_name == 'abakan':
-        # dataset = single_geo_Abakan(predict_table)
         dataset = single_geo_Abakan_raw(predict_table)
     if data_name == 'omsk':
         dataset = single_geo_Omsk(predict_table)
     dataset = dataset.process()
-    # print('geo end')
-    # print('prepare_points end')
     return dataset
-    
-    
-def graphormer_predict(pt_start, pt_end, dataset_name, data, model_state):
-    dataset_name = 'abakan'
-    dataset_abakan_link = BASE + '/datasets/' + dataset_name + '/raw/final.csv'
-    model_abakan_link = BASE + '/models/'+ dataset_name + '/checkpoint_last.pt'
-    data_abakan = prepare_dataset(dataset_abakan_link)
-    data_abakan = prepare_points(data_abakan, pt_start, pt_end)
-
-    model_state_abakan = torch.load(model_abakan_link)["model"]
-    predict_table = data.sort_values(by = ['dist_mean']).reset_index(drop = True)[:1]
-
-    dataset = single_geo_Abakan(predict_table)
-    dataset = dataset.process()
-    predicted_time = predict_time(dataset_name, dataset, model_state)
-
-    return [predict_table['edges_geo'], predicted_time]

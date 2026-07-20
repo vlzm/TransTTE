@@ -215,21 +215,3 @@ def graphormer_predict(pt_start, pt_end, dataset_name, data, model_state):
     predicted_time = predict_time(dataset_name, dataset, model_state)
 
     return [predict_table['edges_geo'], predicted_time]
-
-def check_town(points): 
-    min_N_abk = 90.91763111635001
-    max_N_abk = 91.88558398090001
-    min_E_abk = 52.84332097535
-    max_E_abk = 53.9852115715
-
-    min_N_omsk = 72.8949037781
-    max_N_omsk = 73.75839039050001
-    min_E_omsk = 54.78700068105
-    max_E_omsk = 55.39520542775
-
-    if min(points.start_lat, points.end_lat) >= min_N_abk and max(points.start_lat, points.end_lat) <= max_N_abk and min(points.start_lon, points.end_lon) >= min_E_abk and max(points.start_lon, points.end_lon) <= max_E_abk:
-        return 'abakan'
-    elif min(points.start_lat, points.end_lat) >= min_N_omsk and max(points.start_lat, points.end_lat) <= max_N_omsk and min(points.start_lon, points.end_lon) >= min_E_omsk and max(points.start_lon, points.end_lon) <= max_E_omsk:
-        return 'omsk'
-    else:
-        return 0

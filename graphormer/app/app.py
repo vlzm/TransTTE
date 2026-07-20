@@ -15,7 +15,8 @@ from pydantic import BaseModel
 import pandas as pd
 from loguru import logger
 import torch
-from evaluate_points import prepare_dataset, prepare_args, prepare_points, prepare_eval_model, prepare_eval_iterator, predict_time, prepare_task, convert_to_torch, check_town
+from evaluate_points import prepare_dataset, prepare_args, prepare_points, prepare_eval_model, prepare_eval_iterator, predict_time, prepare_task, convert_to_torch
+from city_bounds import check_town
 from utils import *
 
 

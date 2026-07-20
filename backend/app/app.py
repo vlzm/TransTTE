@@ -17,6 +17,7 @@ import pandas as pd
 from loguru import logger
 
 from settings import Settings
+from city_bounds import check_town as _check_town
 from dijkstra_inference import DijkstraPath
 from eta_inference import ETAInf
 from fastapi.staticfiles import StaticFiles
@@ -83,24 +84,8 @@ class PointsTyped(BaseModel):
     end_lon: float = 37.49859
     type_: str = "beauty_dist_weights"
 
-def check_town(points): 
-    min_N_abk = 52.84332097535
-    max_N_abk = 53.9852115715
-    min_E_abk = 90.91763111635001
-    max_E_abk = 91.88558398090001
-
-    min_N_omsk = 54.78700068105
-    max_N_omsk = 55.39520542775
-    min_E_omsk = 72.8949037781
-    max_E_omsk = 73.75839039050001
-
-    print('5')
-    if min(points.start_lat, points.end_lat) >= min_N_abk and max(points.start_lat, points.end_lat) <= max_N_abk and min(points.start_lon, points.end_lon) >= min_E_abk and max(points.start_lon, points.end_lon) <= max_E_abk:
-        return 'abakan'
-    elif min(points.start_lat, points.end_lat) >= min_N_omsk and max(points.start_lat, points.end_lat) <= max_N_omsk and min(points.start_lon, points.end_lon) >= min_E_omsk and max(points.start_lon, points.end_lon) <= max_E_omsk:
-        return 'omsk'
-    else:
-        return 0
+def check_town(points):
+    return _check_town(points.start_lat, points.start_lon, points.end_lat, points.end_lon)
     
 preloaded_weights = True
 print('start weight load')

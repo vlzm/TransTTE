@@ -5,10 +5,11 @@ RUN pip install --upgrade setuptools
 RUN pip install --upgrade pip
 RUN pip install fastapi
 RUN pip install pydantic
+RUN pip install pydantic-settings
 RUN pip install uvicorn
 RUN pip install numpy
 RUN pip install pandas
-RUN pip install sklearn
+RUN pip install scikit-learn
 RUN pip install python-igraph
 RUN pip install loguru
 

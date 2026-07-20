@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     ssl_keyfile: str = '/etc/letsencrypt/live/transtte.online/privkey.pem'
     ssl_certfile: str = '/etc/letsencrypt/live/transtte.online/fullchain.pem'
 
-    class Config:
-        case_sensitive = False
-        env_file = '.env'
-        env_file_encoding = 'utf-8'
-
+    model_config = SettingsConfigDict(
+        case_sensitive=False,
+        env_file='.env',
+        env_file_encoding='utf-8',
+    )

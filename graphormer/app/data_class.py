@@ -32,6 +32,17 @@ from data.wrapper import preprocess_item
 
 import datetime
 
+# Hardcoded default weather features used at inference time (no live weather feed).
+# Shared by prepare_raw_dataset_edge / prepare_raw_dataset_node so the two stay in sync.
+DEFAULT_WEATHER = {
+    'clouds': 1,
+    'snow': 0,
+    'temperature': 10,
+    'wind_dir': 180,
+    'wind_speed': 3,
+    'pressure': 747,
+}
+
 def find_part(hour):
     if hour < 11:
         part = 1
@@ -84,13 +95,9 @@ def prepare_raw_dataset_edge(dataset_name):
 
     total_table['RTA'] = 1
 
-    total_table['clouds'] = 1
-    total_table['snow'] = 0
-    total_table['temperature'] = 10
-    total_table['wind_dir'] = 180
-    total_table['wind_speed'] = 3
-    total_table['pressure'] = 747
-    
+    for col, val in DEFAULT_WEATHER.items():
+        total_table[col] = val
+
     total_table['source'] = source_merge['source']
     total_table['target'] = source_merge['target']
     
@@ -125,131 +132,26 @@ def prepare_raw_dataset_node(dataset_name):
 
     all_roads_dataset['RTA'] = 1
 
-    all_roads_dataset['clouds'] = 1
-    all_roads_dataset['snow'] = 0
-    all_roads_dataset['temperature'] = 10
-    all_roads_dataset['wind_dir'] = 180
-    all_roads_dataset['wind_speed'] = 3
-    all_roads_dataset['pressure'] = 747
-    
+    for col, val in DEFAULT_WEATHER.items():
+        all_roads_dataset[col] = val
+
     # all_roads_dataset['source'] = source_merge['source']
     # all_roads_dataset['target'] = source_merge['target']
     
     # total_table = total_table.drop_duplicates().reset_index(drop = True)
     return all_roads_dataset
 
-    
-class single_geo_Omsk(InMemoryDataset):
-    def __init__(self, predict_data, transform=None, pre_transform=None, split = 'train'):
-        self.data = predict_data
-
-    def process(self):
-        
-        # Read data
-        # print('start single')
-        start_time = time.time()
-        data = self.data
-        # shape = int(data.shape[0]÷)
-        shape = int(10)
-        data = data[0:1].copy()
-        
-        data = data.drop(columns = ['Unnamed: 0'])
-        data['hour'] = data['start_timestamp'].apply(lambda x: int(x[-10:-8]))
-        # Graph 
-        graph_columns_gran = ['edges', 'time', 'speed', 'length']
-        edges = ['edges']
-        target = ['time']
-        node_features_gran = ['speed', 'length']
-
-        edge_features_agg = [' start_point_part', 'finish_point_part', 'day_period', 'week_period', 'clouds', 'snow', 'temperature', 'wind_dir', 'wind_speed', 'pressure','hour']
-
-        
-        all_speed = []
-        all_length = []
-        for i in range(0,1):
-            # print(i)
-            data_row = data[i:i+1].reset_index(drop = True).copy()
-            speed_list = [int(x) for x in (data_row['speed'].values[0].replace("'",'').split(','))]
-            list_length = [int(x) for x in (data_row['length'].values[0].replace("'",'').split(','))]
-            all_speed.append(speed_list)
-            all_length.append(list_length)
-            
-        all_speed = [item for sublist in all_speed for item in sublist]
-        all_length = [item for sublist in all_length for item in sublist]
-    
-        data_split_dict = dict()
-        data_split_dict['all'] = np.arange(0, int(data.shape[0]))
-        
-        data_list = []
-        for i in data_split_dict['all']:
-            data_row = data.iloc[[i],].reset_index(drop = True).copy()
-
-            speed_list = [int(x) for x in (data_row['speed'].values[0].replace("'",'').split(','))]
-            list_length = [int(x) for x in (data_row['length'].values[0].replace("'",'').split(','))]
-
-
-            data_row_gran = pd.DataFrame()
-            data_row_gran['source'] = data_row['source']
-            data_row_gran['target'] = data_row['target']
-            data_row_gran['speed'] = speed_list
-            data_row_gran['length'] = list_length
-
-
-            target_val = data_row['RTA'].values[0]
-
-
-            data_row_gran['speed'] = data_row_gran['speed']/np.mean(speed_list)
-            data_row_gran['length'] = data_row_gran['length']/np.mean(list_length)
-
-            for col in edge_features_agg:
-                data_row_gran[col] = data_row[col].values[0]
-
-            total_nodes_list = list(set(list(data_row_gran.source.values)))
-            le = preprocessing.LabelEncoder()
-            le.fit(total_nodes_list)
-
-            data_row_gran['source'] = le.transform(data_row_gran.source.values)
-            data_row_gran['target'] = le.transform(data_row_gran.target.values)
-
-            total_nodes_list = list(set(list(data_row_gran.source.values)))
-
-            edge_index = torch.tensor(torch.from_numpy(data_row_gran[['source','target']].values.T),dtype = torch.long)
-
-
-            # Define tensor of nodes features
-            x = torch.tensor(torch.from_numpy(data_row_gran[['speed','length'] + edge_features_agg].values),dtype = torch.long)
-
-
-            # Define tensor of edge features
-            edge_num_feach = 1
-            edge_attr = torch.from_numpy(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)))
-            edge_attr = torch.tensor(edge_attr,dtype = torch.long)
-
-            # Define tensor of targets
-            y = torch.tensor(target_val,dtype = torch.long)
-
-
-            data_graph = Data(x=x, edge_index = edge_index, edge_attr = edge_attr, y=y)
-            data_list.append(data_graph)
-            # print('end single')
-            return data_list
-        
-        
 
 class single_geo_Abakan_raw():
     def __init__(self, predict_data, transform=None, pre_transform=None, split = 'train'):
         self.data = predict_data
 
     def process(self):
-        
+
         # Read data
-        # print('start single')
-        start_time = time.time()
         data = self.data
-        # shape = int(data.shape[0]÷)
-        shape = int(10)
         data = data[0:1].copy()
-        
+
         data = data.drop(columns = ['Unnamed: 0'])
         data['hour'] = data['start_timestamp'].apply(lambda x: int(x[-10:-8]))
         # Graph 
@@ -313,17 +215,16 @@ class single_geo_Abakan_raw():
 
             total_nodes_list = list(set(list(data_row_gran.source.values)))
 
-            edge_index = torch.tensor(torch.from_numpy(data_row_gran[['source','target']].values.T),dtype = torch.long)
+            edge_index = torch.tensor(data_row_gran[['source','target']].values.T, dtype = torch.long)
 
 
             # Define tensor of nodes features
-            x = torch.tensor(torch.from_numpy(data_row_gran[['speed','length'] + edge_features_agg].values),dtype = torch.long)
+            x = torch.tensor(data_row_gran[['speed','length'] + edge_features_agg].values, dtype = torch.long)
 
 
             # Define tensor of edge features
             edge_num_feach = 1
-            edge_attr = torch.from_numpy(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)))
-            edge_attr = torch.tensor(edge_attr,dtype = torch.long)
+            edge_attr = torch.tensor(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)), dtype = torch.long)
 
             # Define tensor of targets
             y = torch.tensor(target_val,dtype = torch.long)
@@ -331,7 +232,6 @@ class single_geo_Abakan_raw():
 
             data_graph = Data(x=x, edge_index = edge_index, edge_attr = edge_attr, y=y)
             data_list.append(data_graph)
-            # print('end single')
             return data_list
         
         
@@ -423,12 +323,11 @@ class single_geo_Abakan():
         data_row_gran['speed'] = [1,1]
         data_row_gran['length'] = [1,1]
         target_val = 1
-        edge_index = torch.tensor(torch.from_numpy(data_row_gran[['source','target']].values.T),dtype = torch.long)
+        edge_index = torch.tensor(data_row_gran[['source','target']].values.T, dtype = torch.long)
         
         # Define tensor of edge features
         edge_num_feach = 1
-        edge_attr = torch.from_numpy(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)))
-        edge_attr = torch.tensor(edge_attr,dtype = torch.long)
+        edge_attr = torch.tensor(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)), dtype = torch.long)
         for col in edge_features_agg:
             data_row_gran[col] = data.iloc[[1],].reset_index(drop = True)[col].values[0]
             
@@ -442,7 +341,7 @@ class single_geo_Abakan():
             for col in [' start_point_part', 'finish_point_part']:
                 data_row_gran[col] = data_row[col].values[0]
             # Define tensor of nodes features
-            x = torch.tensor(torch.from_numpy(data_row_gran[['speed','length'] + edge_features_agg].values),dtype = torch.long)
+            x = torch.tensor(data_row_gran[['speed','length'] + edge_features_agg].values, dtype = torch.long)
 
             data_graph = Data(x=x, edge_index = edge_index, edge_attr = edge_attr, y=y)
             data_list.append(data_graph)
@@ -479,12 +378,11 @@ class single_geo_Omsk():
         data_row_gran['speed'] = [1,1]
         data_row_gran['length'] = [1,1]
         target_val = 1
-        edge_index = torch.tensor(torch.from_numpy(data_row_gran[['source','target']].values.T),dtype = torch.long)
+        edge_index = torch.tensor(data_row_gran[['source','target']].values.T, dtype = torch.long)
         
         # Define tensor of edge features
         edge_num_feach = 1
-        edge_attr = torch.from_numpy(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)))
-        edge_attr = torch.tensor(edge_attr,dtype = torch.long)
+        edge_attr = torch.tensor(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)), dtype = torch.long)
         for col in edge_features_agg:
             data_row_gran[col] = data.iloc[[1],].reset_index(drop = True)[col].values[0]
             
@@ -498,7 +396,7 @@ class single_geo_Omsk():
             for col in [' start_point_part', 'finish_point_part']:
                 data_row_gran[col] = data_row[col].values[0]
             # Define tensor of nodes features
-            x = torch.tensor(torch.from_numpy(data_row_gran[['speed','length'] + edge_features_agg].values),dtype = torch.long)
+            x = torch.tensor(data_row_gran[['speed','length'] + edge_features_agg].values, dtype = torch.long)
 
             data_graph = Data(x=x, edge_index = edge_index, edge_attr = edge_attr, y=y)
             data_list.append(data_graph)
@@ -535,12 +433,11 @@ class full_geo_Abakan():
         data_row_gran['speed'] = data['speed'].apply(lambda x: int(x))
         data_row_gran['length'] = data['length'].apply(lambda x: int(x))
         target_val = torch.ones(data.shape[0])
-        edge_index = torch.tensor(torch.from_numpy(prepared_dataset_edge[['source','target']].values.T),dtype = torch.long)
+        edge_index = torch.tensor(prepared_dataset_edge[['source','target']].values.T, dtype = torch.long)
 
         # Define tensor of edge features
         edge_num_feach = 1
-        edge_attr = torch.from_numpy(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)))
-        edge_attr = torch.tensor(edge_attr,dtype = torch.long)
+        edge_attr = torch.tensor(np.ones(shape = ((edge_index.size()[1]), edge_num_feach)), dtype = torch.long)
         for col in edge_features_agg:
             data_row_gran[col] = data[col]
 
@@ -551,7 +448,7 @@ class full_geo_Abakan():
         # for col in [' start_point_part', 'finish_point_part']:
         #         data_row_gran[col] = data_row[col].values[0]
             # Define tensor of nodes features
-        x = torch.tensor(torch.from_numpy(data_row_gran[['speed','length'] + edge_features_agg].values),dtype = torch.long)
+        x = torch.tensor(data_row_gran[['speed','length'] + edge_features_agg].values, dtype = torch.long)
 
         data_graph = Data(x=x, edge_index = edge_index, edge_attr = edge_attr, y=y)
         return data_graph

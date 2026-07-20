@@ -21,3 +21,8 @@ backend/app/data/graphormer_weights/
 backend/app/data/meteoData.csv
 backend/app/data/dgi_*.csv
 graphormer/app/models/**/*.pt
+
+# Hugo docs site build artifacts
+docs/site/public/
+docs/site/resources/_gen/
+docs/site/.hugo_build.lock

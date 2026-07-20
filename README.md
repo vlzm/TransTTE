@@ -7,6 +7,8 @@ Welcome to the official repo of the TransTTE model -- transformer-based travel t
 
 arXiv PDF: https://arxiv.org/abs/2207.05835
 
+📖 **Documentation:** https://vloods.github.io/TransTTE_demo/ — research background, architecture, running the services, and training details. Source lives in [docs/site/](docs/site/).
+
 # Prerequisites
 
 It is possible to run Visual Tool and Graphormer locally, but we strongly recomend to use provided Dockerfiles

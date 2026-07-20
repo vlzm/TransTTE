@@ -2,7 +2,8 @@ from typing import Tuple
 from pathlib import Path
 
 import numpy as np
-from sklearn.neighbors import BallTree, DistanceMetric
+from sklearn.neighbors import BallTree
+from sklearn.metrics import DistanceMetric
 from igraph import *
 import pickle
 

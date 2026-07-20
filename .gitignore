@@ -1,0 +1,23 @@
+# --- OS / editor junk ---
+.DS_Store
+
+# --- Python ---
+__pycache__/
+*.pyc
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+Untitled*.ipynb
+
+# --- Large data assets (downloaded separately, see CLAUDE.md) ---
+# Backend data: https://disk.yandex.ru/d/NHj3ukteUGn-dA
+# Graphormer models: https://disk.yandex.ru/d/rQCIJs_7Q7Li6g
+# These are required to run the services but must never be committed to git.
+*.pkl
+*.pickle
+*.pth
+*.pt
+backend/app/data/graphormer_weights/
+backend/app/data/meteoData.csv
+backend/app/data/dgi_*.csv
+graphormer/app/models/**/*.pt

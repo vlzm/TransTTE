@@ -25,7 +25,7 @@ from city_bounds import check_town as _check_town
 from dijkstra_inference import DijkstraPath
 from eta_inference import ETAInf
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from fastapi import(
     FastAPI,
     Header,
@@ -130,6 +130,14 @@ logger.debug('graphormer weights loaded')
 def ping():
     html_file = BASE / 'index.html'
     return HTMLResponse(html_file.open().read())
+
+
+@app.get('/config.js')
+def config_js():
+    # index.html loads config.js (sets window.API_BASE) before index.js.
+    # Served empty here so the same-origin fallback kicks in; the GitHub Pages
+    # copy ships its own config.js pointing at the ACA FQDN. See task D1.
+    return FileResponse(BASE / 'config.js', media_type='application/javascript')
 
 
 @app.get('/health')

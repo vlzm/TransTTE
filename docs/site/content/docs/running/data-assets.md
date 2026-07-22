@@ -63,4 +63,4 @@ One trained checkpoint per city — loaded to produce the per-edge weights.
 
 > The datasets themselves are for **research use only**. To incorporate the data in your own
 > study, send a request to the address in the
-> [repository README](https://github.com/Vloods/TransTTE_demo).
+> [repository README](https://github.com/vlzm/TransTTE).

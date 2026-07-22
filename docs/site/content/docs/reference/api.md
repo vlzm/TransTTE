@@ -21,7 +21,7 @@ Both services are FastAPI apps that bind to `0.0.0.0:80` regardless of what the 
 ## Backend service
 
 Source:
-[`backend/app/app.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/app.py).
+[`backend/app/app.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/app.py).
 
 ### `GET /`
 
@@ -92,7 +92,7 @@ divided by 10 before being returned.)
 ## Graphormer service
 
 Source:
-[`graphormer/app/app.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/app.py).
+[`graphormer/app/app.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/app.py).
 GPU service — expensive, normally run once to produce the weight pickles the backend
 consumes.
 

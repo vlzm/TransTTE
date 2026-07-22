@@ -14,7 +14,7 @@ an ETA for each available [routing objective]({{< relref
 `GET /`.
 
 Source:
-[`backend/app/app.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/app.py).
+[`backend/app/app.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/app.py).
 
 ## The endpoint
 
@@ -43,7 +43,7 @@ flowchart TD
 
 ### 1. Pick the city — `check_town`
 
-[`city_bounds.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/city_bounds.py)
+[`city_bounds.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/city_bounds.py)
 holds a bounding box per city. `check_town` returns `'abakan'` or `'omsk'` only if
 **both** endpoints fall inside the same city's box, otherwise `None` → `HTTP 400`. (The
 same file is duplicated into the graphormer service, since the two Docker contexts share
@@ -52,7 +52,7 @@ no package — keep the copies in sync.)
 ### 2. Snap to the graph — `BallTree`
 
 Endpoints almost never land exactly on a graph node. `DijkstraPath` builds a
-[`BallTree`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/dijkstra_inference.py)
+[`BallTree`](https://github.com/vlzm/TransTTE/blob/main/backend/app/dijkstra_inference.py)
 over all node coordinates using the **haversine** metric (coordinates converted to
 radians) and queries the nearest node for each endpoint.
 

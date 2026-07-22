@@ -11,7 +11,7 @@ arrival**. It does this in one of two ways, depending on the weight variant. Kno
 you are touching — they share no code.
 
 `return_path` in
-[`backend/app/app.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/app.py)
+[`backend/app/app.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/app.py)
 picks the path per variant:
 
 | Variant | ETA method | Where |
@@ -24,9 +24,9 @@ picks the path per variant:
 
 For the Abakan non-Graphormer variants the ETA comes from a small feed-forward network,
 **`FFNet`** (152 inputs → 128 → 1, ReLU), defined in
-[`ml.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/ml.py) and driven
+[`ml.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/ml.py) and driven
 by `ETAInf.forward` in
-[`eta_inference.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/eta_inference.py).
+[`eta_inference.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/eta_inference.py).
 The 152-dimensional input vector is assembled per request from:
 
 - **Route node embeddings** — the DeepGraphInfomax + GraphSAGE embeddings (`dgi_*` CSV),
@@ -45,7 +45,7 @@ the ETA itself is predicted by the net, not read off the weights.
 
 For every Omsk variant and for the `graphormer_weights` variant, the **weight *is* the
 time**. `get_shortest_path_grph` in
-[`dijkstra_inference.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/dijkstra_inference.py)
+[`dijkstra_inference.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/dijkstra_inference.py)
 routes with igraph and then sums the per-edge weights along the chosen path to get the ETA
 directly — no separate model. (For Omsk the summed value is divided by 10 before being
 returned, an empirical unit adjustment baked into `app.py`.)

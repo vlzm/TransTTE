@@ -7,7 +7,9 @@ Welcome to the official repo of the TransTTE model -- transformer-based travel t
 
 arXiv PDF: https://arxiv.org/abs/2207.05835
 
-📖 **Documentation:** https://vloods.github.io/TransTTE_demo/ — research background, architecture, running the services, and training details. Source lives in [docs/site/](docs/site/).
+🚀 **Live demo:** https://vlzm.github.io/TransTTE/demo/
+
+📖 **Documentation:** https://vlzm.github.io/TransTTE/ — research background, architecture, running the services, and training details. Source lives in [docs/site/](docs/site/).
 
 # Prerequisites
 
@@ -49,7 +51,7 @@ Additionally, you need to install [fairseq](https://github.com/facebookresearch/
 # Local test
 
 **Prepare repository, data and weights:**
-- Clone repository: ```git clone https://github.com/Vloods/TransTTE_demo```
+- Clone repository: ```git clone https://github.com/vlzm/TransTTE```
 - Download [backend data](https://disk.yandex.ru/d/NHj3ukteUGn-dA) and put it in backend/app/data
 - Download [graphormer models](https://disk.yandex.ru/d/rQCIJs_7Q7Li6g) and put it in graphormer/app/models
 - Download geo-datasets to fit graphormer (check the section below)
@@ -98,4 +100,4 @@ We provide two datasets corresponding to the cities of Abakan and Omsk. For each
 
 </td></tr> </table>
 
-Provided data could be used for research purposes only. If you want to incorporate it in your study, please send request to semenova.bnl@gmail.com.
+Provided data could be used for research purposes only. If you want to incorporate it in your study, please open an issue in this repository.

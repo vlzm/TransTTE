@@ -12,7 +12,7 @@ road graph plus a set of real trips. For every trip there are two possible targe
 
 > The Omsk dataset is a contribution of the paper — a new, large TTE benchmark released
 > alongside the model. The data is for research use only; requests go to the address in the
-> [repository README](https://github.com/Vloods/TransTTE_demo).
+> [repository README](https://github.com/vlzm/TransTTE).
 
 ## Road network
 

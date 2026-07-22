@@ -13,7 +13,7 @@ every edge of that city's road graph. This is the expensive step, and it is norm
 "/docs/architecture/backend-service" >}}) reads at startup.
 
 Source:
-[`graphormer/app/app.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/app.py).
+[`graphormer/app/app.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/app.py).
 
 ## The endpoint
 
@@ -43,11 +43,11 @@ The recompute path wires together the offline evaluation machinery documented un
 [Training]({{< relref "/docs/training" >}}):
 
 1. Build the road graph as a PyG dataset (`full_geo_Abakan` in
-   [`data_class.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/data_class.py),
+   [`data_class.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/data_class.py),
    used for both cities).
 2. Prepare the fairseq task, config, and model from the checkpoint
    (`prepare_eval_model`, `prepare_task` in
-   [`evaluate_points.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/evaluate_points.py)).
+   [`evaluate_points.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/evaluate_points.py)).
 3. Run inference to emit one predicted travel time per edge, in the same order as the
    graph's edges.
 

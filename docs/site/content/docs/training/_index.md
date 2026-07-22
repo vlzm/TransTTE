@@ -61,10 +61,10 @@ them:
 - `graphormer/app/graphormer_repo/graphormer/data/pyg_datasets/mydata_omsk.py`
 
 Graph objects are assembled by
-[`data_class.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/data_class.py)
+[`data_class.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/data_class.py)
 (`single_geo_Abakan`, `full_geo_Abakan`, `GraphormerPYGDataset_predict`, …), and the
 evaluation iterator that produces per-edge weights is wired in
-[`evaluate_points.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/evaluate_points.py).
+[`evaluate_points.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/evaluate_points.py).
 That same eval path is what the
 [Graphormer service]({{< relref "/docs/architecture/graphormer-service" >}}) runs to serve
 `POST /get_weights`.

@@ -1,4 +1,4 @@
-baseURL = 'https://vloods.github.io/TransTTE_demo/'   # adjust to the real Pages URL/domain
+baseURL = 'https://vlzm.github.io/TransTTE/'   # adjust to the real Pages URL/domain
 title = 'TransTTE'
 theme = 'hugo-book'
 locale = 'en-us'
@@ -7,7 +7,7 @@ locale = 'en-us'
 [params]
   BookTheme = 'auto'          # light/dark/auto
   BookToC = true              # right-hand table of contents
-  BookRepo = 'https://github.com/Vloods/TransTTE_demo'   # "Edit this page" link
+  BookRepo = 'https://github.com/vlzm/TransTTE'   # "Edit this page" link
   BookEditPath = 'edit/main/docs/site/content'
   BookSearch = true
   BookComments = false

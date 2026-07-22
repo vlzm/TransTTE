@@ -20,9 +20,9 @@ internals.
 
 Docker is the recommended path — the dependency stack (torch 1.9.1+cu111,
 torch-geometric 1.7.2, dgl 0.7.2, and a source build of fairseq) is finicky to reproduce by
-hand. The [`Dockerfile`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/Dockerfile)
+hand. The [`Dockerfile`](https://github.com/vlzm/TransTTE/blob/main/graphormer/Dockerfile)
 installs the pinned packages and runs
-[`install.sh`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/install.sh),
+[`install.sh`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/install.sh),
 which clones and source-builds **fairseq** into `graphormer_repo/`.
 
 ```bash
@@ -60,5 +60,5 @@ that fails silently if broken.
   from the model is the `else` branch. You only need to run this service when regenerating
   weights.
 - The evaluation iterator that turns a checkpoint into edge weights lives in
-  [`evaluate_points.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/evaluate_points.py)
+  [`evaluate_points.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/evaluate_points.py)
   — see [Training]({{< relref "/docs/training" >}}).

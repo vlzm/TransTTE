@@ -43,7 +43,7 @@ The paper makes three contributions:
 ## Links
 
 - 📄 Paper — [arXiv:2207.05835](https://arxiv.org/abs/2207.05835) (PKDD'22)
-- 💻 Code — [github.com/Vloods/TransTTE_demo](https://github.com/Vloods/TransTTE_demo)
+- 💻 Code — [github.com/vlzm/TransTTE](https://github.com/vlzm/TransTTE)
 - 🌍 Live demo — [transtte.online](http://transtte.online)
 
 > **Authors.** Natalia Semenova, Vadim Porvatov, Vladislav Tishin, Artyom Sosedka,

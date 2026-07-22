@@ -18,7 +18,7 @@ internally.
 ## Run it directly (Python)
 
 The backend is a plain FastAPI app; the entrypoint is
-[`start.sh`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/start.sh), which just
+[`start.sh`](https://github.com/vlzm/TransTTE/blob/main/backend/start.sh), which just
 runs the app:
 
 ```bash
@@ -42,7 +42,7 @@ http://127.0.0.1:80/
 
 ## Dependencies
 
-Backend requirements ([`requirements.txt`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/requirements.txt)):
+Backend requirements ([`requirements.txt`](https://github.com/vlzm/TransTTE/blob/main/backend/requirements.txt)):
 
 ```
 fastapi~=0.67.0

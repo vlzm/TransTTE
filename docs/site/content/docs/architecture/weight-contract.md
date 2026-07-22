@@ -32,7 +32,7 @@ route variant. Each pickle is just a flat list of floats.
 There is no key, no edge id, no coordinate embedded alongside each weight — position *is*
 the join key. The backend applies the list directly to the graph's edge sequence
 (`self.g.es["weight"] = list(weights)` in
-[`dijkstra_inference.py`](https://github.com/Vloods/TransTTE_demo/blob/main/backend/app/dijkstra_inference.py)),
+[`dijkstra_inference.py`](https://github.com/vlzm/TransTTE/blob/main/backend/app/dijkstra_inference.py)),
 so a mismatch produces **wrong routes and wrong ETAs with no error** — the worst kind of
 bug, because everything still "works".
 

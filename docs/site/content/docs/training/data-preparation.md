@@ -16,9 +16,9 @@ resulting numbers; this page covers how they are built.
 
 | Notebook | Produces |
 |--|--|
-| [`preprocessing/graph_preprocessing.ipynb`](https://github.com/Vloods/TransTTE_demo/blob/main/preprocessing/graph_preprocessing.ipynb) | The city road graphs (nodes / edges) fed to Graphormer and to igraph. |
-| [`preprocessing/ETA_additional_features_processing.ipynb`](https://github.com/Vloods/TransTTE_demo/blob/main/preprocessing/ETA_additional_features_processing.ipynb) | The extra ETA features (geometry, time-of-day, etc.). |
-| [`preprocessing/gismeteo_parser.ipynb`](https://github.com/Vloods/TransTTE_demo/blob/main/preprocessing/gismeteo_parser.ipynb) | Weather data (feeds `meteoData.csv`). |
+| [`preprocessing/graph_preprocessing.ipynb`](https://github.com/vlzm/TransTTE/blob/main/preprocessing/graph_preprocessing.ipynb) | The city road graphs (nodes / edges) fed to Graphormer and to igraph. |
+| [`preprocessing/ETA_additional_features_processing.ipynb`](https://github.com/vlzm/TransTTE/blob/main/preprocessing/ETA_additional_features_processing.ipynb) | The extra ETA features (geometry, time-of-day, etc.). |
+| [`preprocessing/gismeteo_parser.ipynb`](https://github.com/vlzm/TransTTE/blob/main/preprocessing/gismeteo_parser.ipynb) | Weather data (feeds `meteoData.csv`). |
 
 Trip filtering (rebuild count, min/max length, total time) and the two targets — real
 travel time and real trip length — are described on the
@@ -30,7 +30,7 @@ The backend's **neural ETA** path
 ([`FFNet`]({{< relref "/docs/architecture/eta-paths" >}})) consumes per-node embeddings, not
 raw coordinates. Those embeddings are trained with **Deep Graph Infomax (DGI)** over a
 **GraphSAGE** encoder in
-[`algorithms/stellar_deepgraphinfomax-graphsage.ipynb`](https://github.com/Vloods/TransTTE_demo/blob/main/algorithms/stellar_deepgraphinfomax-graphsage.ipynb).
+[`algorithms/stellar_deepgraphinfomax-graphsage.ipynb`](https://github.com/vlzm/TransTTE/blob/main/algorithms/stellar_deepgraphinfomax-graphsage.ipynb).
 
 The output is written as `dgi_*` CSV files that the backend loads at startup — for example
 `dgi_sage_abakan_5_5_5_relu_relu_relu_200e_mean_pool_0.0114.csv` under
@@ -39,11 +39,11 @@ and aggregation used to train it.
 
 ## Auxiliary scripts
 
-- [`algorithms/parse_weather.py`](https://github.com/Vloods/TransTTE_demo/blob/main/algorithms/parse_weather.py),
-  [`algorithms/get_samples.py`](https://github.com/Vloods/TransTTE_demo/blob/main/algorithms/get_samples.py)
+- [`algorithms/parse_weather.py`](https://github.com/vlzm/TransTTE/blob/main/algorithms/parse_weather.py),
+  [`algorithms/get_samples.py`](https://github.com/vlzm/TransTTE/blob/main/algorithms/get_samples.py)
   — weather scraping and trip sampling.
-- [`algorithms/inference_ETA.py`](https://github.com/Vloods/TransTTE_demo/blob/main/algorithms/inference_ETA.py),
-  [`algorithms/regression.ipynb`](https://github.com/Vloods/TransTTE_demo/blob/main/algorithms/regression.ipynb)
+- [`algorithms/inference_ETA.py`](https://github.com/vlzm/TransTTE/blob/main/algorithms/inference_ETA.py),
+  [`algorithms/regression.ipynb`](https://github.com/vlzm/TransTTE/blob/main/algorithms/regression.ipynb)
   — the regression-based ETA baseline. Note this baseline uses **TensorFlow/Keras**, unlike
   the serving `FFNet`, which is **PyTorch**.
 

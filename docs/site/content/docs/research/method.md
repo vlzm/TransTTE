@@ -17,7 +17,7 @@ which injects graph structure into a standard transformer through a few structur
 encodings. TransTTE adopts the two graph-oriented aspects below.
 
 The repository implementation lives in
-[`graphormer/app/graphormer_repo/graphormer/models/graphormer.py`](https://github.com/Vloods/TransTTE_demo/blob/main/graphormer/app/graphormer_repo/graphormer/models/graphormer.py).
+[`graphormer/app/graphormer_repo/graphormer/models/graphormer.py`](https://github.com/vlzm/TransTTE/blob/main/graphormer/app/graphormer_repo/graphormer/models/graphormer.py).
 
 ## Centrality encoding
 

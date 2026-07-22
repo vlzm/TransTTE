@@ -44,7 +44,7 @@ The paper makes three contributions:
 
 - 📄 Paper — [arXiv:2207.05835](https://arxiv.org/abs/2207.05835) (PKDD'22)
 - 💻 Code — [github.com/vlzm/TransTTE](https://github.com/vlzm/TransTTE)
-- 🌍 Live demo — [transtte.online](http://transtte.online)
+- 🌍 Live demo — [vlzm.github.io/TransTTE/demo](https://vlzm.github.io/TransTTE/demo/)
 
 > **Authors.** Natalia Semenova, Vadim Porvatov, Vladislav Tishin, Artyom Sosedka,
 > Vladislav Zamkovoy (Sberbank · AIRI · MISIS).

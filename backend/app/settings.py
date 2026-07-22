@@ -2,11 +2,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    hostname: str = 'transtte.online'
+    hostname: str = 'localhost'
     port: int = 9998
     project_name: str = 'Whoosh'
-    ssl_keyfile: str = '/etc/letsencrypt/live/transtte.online/privkey.pem'
-    ssl_certfile: str = '/etc/letsencrypt/live/transtte.online/fullchain.pem'
+    ssl_keyfile: str = '/etc/letsencrypt/live/example.com/privkey.pem'
+    ssl_certfile: str = '/etc/letsencrypt/live/example.com/fullchain.pem'
 
     model_config = SettingsConfigDict(
         case_sensitive=False,

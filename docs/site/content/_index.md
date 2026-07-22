@@ -26,7 +26,7 @@ those weights into routes and ETAs. See the
 
 - 📄 **Paper** — [arXiv:2207.05835](https://arxiv.org/abs/2207.05835)
 - 💻 **Code** — [github.com/vlzm/TransTTE](https://github.com/vlzm/TransTTE)
-- 🌍 **Live demo** — [transtte.online](http://transtte.online)
+- 🌍 **Live demo** — [vlzm.github.io/TransTTE/demo](https://vlzm.github.io/TransTTE/demo/)
 
 ## Where to go next
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-TransTTE — transformer-based travel time estimation (PKDD'22 paper "Logistics, Graphs, and Transformers: Towards improving Travel Time Estimation"). Two datasets/cities are supported: **Abakan** and **Omsk**. Live demo: transtte.online. Paper: https://arxiv.org/abs/2207.05835
+TransTTE — transformer-based travel time estimation (PKDD'22 paper "Logistics, Graphs, and Transformers: Towards improving Travel Time Estimation"). Two datasets/cities are supported: **Abakan** and **Omsk**. Live demo: https://vlzm.github.io/TransTTE/demo/. Paper: https://arxiv.org/abs/2207.05835
 
 The system is a two-service pipeline. A Graphormer model predicts a travel-time weight for every edge in a city road graph; the backend uses those per-edge weights to run shortest-path routing and serve a map UI.
 
@@ -63,7 +63,7 @@ docker run --rm -it -p 80:80 graphormer
 #   weights_dict = r.json()
 ```
 
-Note: both `app.py` hardcode `uvicorn.run(app, host='0.0.0.0', port=80)`; the graphormer `Dockerfile` `EXPOSE`s 3006 and `backend/app/settings.py` names other ports — the actual bind is 80. `settings.py` (hostname `transtte.online`, SSL cert paths) is not wired into the run call.
+Note: both `app.py` hardcode `uvicorn.run(app, host='0.0.0.0', port=80)`; the graphormer `Dockerfile` `EXPOSE`s 3006 and `backend/app/settings.py` names other ports — the actual bind is 80. `settings.py` (placeholder hostname + SSL cert paths) is not wired into the run call.
 
 The Graphormer Docker build runs [graphormer/app/install.sh](graphormer/app/install.sh), which clones and source-builds fairseq into `graphormer_repo/`.
 

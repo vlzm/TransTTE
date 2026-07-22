@@ -64,7 +64,7 @@ uvicorn.run(app, host='0.0.0.0', port=80)
 
 So the actual listening port is always **80**, regardless of other numbers you may see:
 the Graphormer `Dockerfile` `EXPOSE`s **3006**, and `backend/app/settings.py` names port
-**9998** with `transtte.online` SSL cert paths. Those settings (`Settings().port`, cert
+**9998** with placeholder SSL cert paths. Those settings (`Settings().port`, cert
 files) sit in a **commented-out** `uvicorn.run` line and are **not wired into the actual
 run**. Map port 80 when you `docker run`.
 

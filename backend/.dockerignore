@@ -1,0 +1,19 @@
+# Dead data — not read by any runtime code path (verified against app/app.py,
+# dijkstra_inference.py, eta_inference.py). Keeping them out of the build
+# context shrinks the image (~230 MB) → faster pull and cold start on ACA.
+app/data/tmp/
+app/data/balltree.pkl
+app/data/dist.pkl
+app/data/average_speed.pkl
+app/data/regression_final.pt
+app/data/regression_prod.pt
+app/data/SimpleTTE.pt
+app/data/**/.ipynb_checkpoints/
+
+# Old duplicate frontend (UI is moving to GitHub Pages; served copy is app/index.html + app/js + app/css)
+app/front/
+
+# Misc
+**/__pycache__/
+**/.Rhistory
+app/settings.py.save

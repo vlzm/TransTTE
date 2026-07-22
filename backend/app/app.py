@@ -51,9 +51,11 @@ dijkstra_abakan = DijkstraPath(BASE / 'data/dijkstra.pickle', BASE / 'data/clear
 etainf_abakan = ETAInf(BASE / 'data/SimpleTTE.pth', BASE / 'data/meteoData.csv', BASE / 'data/dgi_sage_abakan_5_5_5_relu_relu_relu_200e_mean_pool_0.0114.csv')
 weights_dict_abakan = {}
 
-logger.debug('loading omsk dijkstra graph and ETA model')
+logger.debug('loading omsk dijkstra graph')
+# Omsk computes ETA via get_shortest_path_grph (weighted-sum), not the FFNet ETA model,
+# so etainf_omsk is never used — its .forward() call in return_path is commented out.
+# Dropping it avoids loading the 50M dgi_sage embeddings CSV a second time (~40-80 MB RAM).
 dijkstra_omsk = DijkstraPath(BASE / 'data/graph_omsk.pkl', BASE / 'data/clear_nodes_omsk.pkl')
-etainf_omsk = ETAInf(BASE / 'data/SimpleTTE.pth', BASE / 'data/meteoData.csv', BASE / 'data/dgi_sage_abakan_5_5_5_relu_relu_relu_200e_mean_pool_0.0114.csv')
 weights_dict_omsk = {}
 
 logger.debug('loading abakan weight variants')

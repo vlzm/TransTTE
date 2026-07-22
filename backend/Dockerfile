@@ -14,7 +14,9 @@ RUN pip install python-igraph
 RUN pip install loguru
 
 RUN pip install requests
-RUN pip install torch
+# CPU-only build — ACA has no GPU, so the full CUDA wheel (~6GB of nvidia-*-cu12
+# packages) is dead weight that bloats the image and slows scale-from-zero cold start.
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install slowapi
 
 COPY . .

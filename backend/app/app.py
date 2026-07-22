@@ -16,6 +16,10 @@ from pydantic import BaseModel
 import pandas as pd
 from loguru import logger
 
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
 from settings import Settings
 from city_bounds import check_town as _check_town
 from dijkstra_inference import DijkstraPath
@@ -32,10 +36,18 @@ from fastapi import(
     UploadFile
     )
 
-origins = ["*"]
+# CORS: restrict to the GitHub Pages origin(s) that host the UI.
+# Override in prod via ALLOWED_ORIGINS (comma-separated) — see AZURE_DEPLOYMENT_PLAN.md C2.
+origins = os.getenv("ALLOWED_ORIGINS", "https://vlzm.github.io").split(",")
 BASE = Path(os.path.realpath(__file__)).parent
 
+# Rate limit keyed by client IP — main barrier against flooding the CPU-bound
+# /get_path endpoint (CORS does not protect against curl). See plan C1.
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -120,9 +132,18 @@ def ping():
     return HTMLResponse(html_file.open().read())
 
 
+@app.get('/health')
+def health():
+    # All heavy assets load at module import (before uvicorn accepts requests),
+    # so any 200 here means the container is fully warm. Used by the UI warmup
+    # spinner to poll the cold-started container. Intentionally not rate-limited.
+    return {"status": "ok"}
+
+
 @app.post('/get_path')
-def return_path(points: Points):
-    
+@limiter.limit("20/minute")
+def return_path(request: Request, points: Points):
+
     logger.debug('start get_path')
     logger.info(points)
     if not all(map(lambda x: 0 <= x[1] <= 180, points)):

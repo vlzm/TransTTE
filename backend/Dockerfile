@@ -15,6 +15,7 @@ RUN pip install loguru
 
 RUN pip install requests
 RUN pip install torch
+RUN pip install slowapi
 
 COPY . .
 EXPOSE 80
